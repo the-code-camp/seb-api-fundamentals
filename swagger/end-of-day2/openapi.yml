@@ -1,0 +1,165 @@
+openapi: 3.0.3
+info:
+  title: My API
+  version: '1.0'
+  description: Best API ever
+  termsOfService: https://www.example.com
+  contact:
+    email: ashish@mysite.com
+    name: Ashish
+    url: ashish.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://my-json-server.typicode.com/typicode/demo
+    variables: {}
+    description: My demo server for posts
+  - url: https://my-json-server.typicode.com/bearc0025/api
+    variables: {}
+    description: Bear's api server for users
+  - url: http://localhost:3000
+    variables: {}
+    description: local server
+  - url: http://localhost:{port}
+    variables:
+      port:
+        default: '3000'
+        enum:
+          - '3000'
+          - '3001'
+        description: ''
+paths:
+  /users:
+    summary: user level operations
+    description: create and reads users
+    get:
+      summary: get all users
+      description: users API
+      operationId: fetchUsers
+      parameters:
+        - in: query
+          required: true
+          name: status
+          schema:
+            type: string
+            enum:
+              - available
+              - pending
+      responses:
+        2XX:
+          $ref: '#/components/responses/UserArrayResponseBody'
+        default:
+          description: Default error sample response
+    post:
+      summary: create user
+      description: store user on server
+      operationId: createUser
+      requestBody:
+        $ref: '#/components/requestBodies/UserPostBody'
+      responses:
+        2XX:
+          $ref: '#/components/responses/UserRespBody'
+        default:
+          description: Default error sample response
+  /posts:
+    summary: all post operations
+    description: CRUD on posts
+    get:
+      summary: get all posts
+      description: post information
+      operationId: fetchPosts
+      parameters:
+        - in: query
+          required: true
+          name: offset
+          schema:
+            type: integer
+            example: 1
+            minimum: 1
+        - in: query
+          required: true
+          name: limit
+          schema:
+            type: integer
+            example: 1
+            minimum: 1
+      responses:
+        default:
+          description: Default error sample response
+  /posts/{postId}:
+    summary: individual posts operations
+    description: fetch, update and delete
+    get:
+      summary: fetch a post
+      description: Get a post by id
+      operationId: getPost
+      parameters:
+        - $ref: '#/components/parameters/PostId'
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - posts
+components:
+  parameters:
+    PostId:
+      in: path
+      required: true
+      name: postId
+      schema:
+        type: integer
+        example: 2
+        minimum: 1
+  
+  responses:
+    UserArrayResponseBody:
+      description: returns list of users
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserArray'
+    UserRespBody:
+      description: new user response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FullUser'
+  requestBodies:
+    UserPostBody:
+      description: new user request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PostNewUser'
+  schemas:
+    UserArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/FullUser'
+    FullUser:
+      allOf:
+        - $ref: '#/components/schemas/PostNewUser'
+        - type: object
+          properties:
+            id:
+              type: string
+              example: abc123
+    PostNewUser:
+      required:
+        - username
+      type: object
+      properties:
+        username:
+          type: string
+          example: some name
+        active:
+          type: boolean
+          example: true
+        score:
+          type: integer
+          example: 10
