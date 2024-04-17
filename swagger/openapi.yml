@@ -1,0 +1,48 @@
+openapi: 3.0.3
+info:
+  title: My API
+  version: '1.0'
+  description: Best API ever
+  termsOfService: https://www.example.com
+  contact:
+    email: ashish@mysite.com
+    name: Ashish
+    url: ashish.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://my-json-server.typicode.com/typicode/demo
+    variables: {}
+    description: My demo server for posts
+  - url: https://my-json-server.typicode.com/bearc0025/api
+    variables: {}
+    description: Bear's api server for users
+  - url: http://localhost:3000
+    variables: {}
+    description: local server
+paths:
+  /users:
+    summary: user level operations
+    description: create and reads users
+    get:
+      summary: get all users
+      description: users API
+      operationId: fetchUsers
+      responses:
+        default:
+          description: Default error sample response
+  /posts:
+    summary: all post operations
+    description: CRUD on posts
+    get:
+      summary: get all posts
+      description: post information
+      operationId: fetchPosts
+      responses:
+        default:
+          description: Default error sample response
+
