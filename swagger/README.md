@@ -1,3 +1,3 @@
 ## Backup
 
-Folder to store end-of-day openapi yaml config.
+Folder to store end-of-day OpenAPI config.
