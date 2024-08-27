@@ -1,0 +1,24 @@
+openapi: 3.0.3
+info:
+  title: My API
+  version: '1.0'
+  description: Best API ever
+  termsOfService: http://www.example.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: https://my-json-server.typicode.com/typicode/demo
+    variables: {}
+    description: Demo Server
+paths:
+  /posts:
+    summary: blog post operation
+    description: create and list all blog posts
+    get:
+      summary: fetch posts
+      description: read all posts from server
+      operationId: fetchPosts
+      responses:
+        default:
+          description: Default error sample response
