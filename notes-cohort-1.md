@@ -200,3 +200,17 @@ PATCH/PUT /posts/1
 {
   "title": "NEW blog title-1"
 }
+
+fetch(url)
+.success(() => {
+  // 2xx response codes
+})
+.error(() => {
+  // 4xx, 5xx 
+})
+
+
+/posts/{postId}/comments -> path variable
+
+/posts/{postId}?_embed=comments -> query 
+/users/
