@@ -189,3 +189,26 @@ Relationships in the URL
 GET /posts/1/comments -> get all comments related to postId 1
 
 GET /comments/1/posts
+
+
+
+
+
+
+
+/posts
+
+New path /posts/{postId}
+
+GET   /posts
+POST  /posts
+
+GET   /posts/10 -> 404
+
+fetch(url)
+.success((response)=> {
+  // 2XX needs to be handled here
+})
+.error((error) => {
+  // 4xx, 5xx needs to be handled here
+})
