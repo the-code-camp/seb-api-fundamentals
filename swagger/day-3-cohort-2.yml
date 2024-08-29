@@ -1,0 +1,149 @@
+openapi: 3.0.3
+info:
+  title: My API
+  version: '1.0'
+  description: Best API ever
+  termsOfService: http://www.example.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: https://my-json-server.typicode.com/typicode/demo
+    variables: {}
+    description: Demo Server
+  - url: https://my-json-server.typicode.com/bearc0025/api
+    variables: {}
+    description: My Users API Server
+paths:
+  /posts:
+    summary: blog post operation
+    description: create and list all blog posts
+    get:
+      summary: fetch posts
+      description: read all posts from server
+      operationId: fetchPosts
+      parameters:
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            minimum: 0
+            example: 20
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 0
+            example: 20
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Posts
+  /users:
+    summary: user level operations
+    description: create and read users from server
+    get:
+      summary: fetch users
+      description: reads users from server
+      operationId: fetchUsers
+      responses:
+        2XX:
+          $ref: '#/components/responses/UserArrayRespBody'
+      tags:
+        - Users
+    post:
+      summary: create user
+      description: stores user on server
+      operationId: createUser
+      requestBody:
+        $ref: '#/components/requestBodies/UserPostBody'
+      responses:
+        2XX:
+          $ref: '#/components/responses/UserRespBody'
+      tags:
+        - Users
+  /posts/{postId}:
+    summary: Individual posts operation
+    description: Fetch, delete and update operations
+    parameters:
+      - $ref: '#/components/parameters/PostId'
+    get:
+      summary: get a post
+      description: Get a post by Id from server
+      operationId: getPost
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Posts
+    delete:
+      summary: delete a post
+      description: delete a post by id
+      operationId: deletePost
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Posts
+components:
+  parameters:
+    PostId:
+      in: path
+      required: true
+      name: postId
+      schema:
+        type: integer
+        minimum: 0
+        example: 5
+  responses:
+    UserArrayRespBody:
+      description: user array response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserArray'
+    UserRespBody:
+      description: user response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FullUser'
+  requestBodies:
+    UserPostBody:
+      description: new user request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NewUserRequest'
+  schemas:
+    UserArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/FullUser'
+    FullUser:
+      allOf:
+        - $ref: '#/components/schemas/PostNewUser'
+        - type: object
+          properties:
+            id:
+              type: string
+              example: xyz123
+    NewUserRequest:
+      allOf:
+        - $ref: '#/components/schemas/PostNewUser'
+        - required:
+            - username
+    PostNewUser:
+      type: object
+      properties:
+        username:
+          type: string
+          example: bear
+        score:
+          type: integer
+          example: 55
+        active:
+          type: boolean
+          example: true

@@ -212,3 +212,26 @@ fetch(url)
 .error((error) => {
   // 4xx, 5xx needs to be handled here
 })
+
+
+/posts/10?_embed=comments
+
+GET /posts/10
+PUT/PATCH /posts/10
+DELETE /posts/10
+
+
+
+class Customer {
+  Address address
+  Orders orders
+}
+
+class Address {
+
+}
+
+class Orders {
+  
+}
+
