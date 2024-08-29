@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: My API
+  version: '1.0'
+  description: Best API ever
+  termsOfService: http://www.example.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: https://my-json-server.typicode.com/typicode/demo/
+    variables: {}
+    description: Demo Server
+  - url: https://my-json-server.typicode.com/bearc0025/api
+    variables: {}
+    description: My Users API
+paths:
+  /posts:
+    summary: Blog post operations
+    description: Creating and reading all blog posts
+    get:
+      summary: Gets all posts
+      description: fetch blog posts from server
+      operationId: fetchPosts
+      parameters:
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            minimum: 0
+            example: 20
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            example: 20
+      responses:
+        default:
+          description: Default error sample response
+  /users:
+    summary: users level operations
+    description: create and read users
+    get:
+      summary: Fetch users
+      description: read users from server
+      operationId: fetchUsers
+      responses:
+        '200':
+          $ref: '#/components/responses/UserArrayRespBody'
+      tags:
+        - Users
+    post:
+      summary: Create user
+      description: Stores a user on the server
+      operationId: createUser
+      requestBody:
+        $ref: '#/components/requestBodies/UserPostBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/UserRespBody'
+      tags:
+        - Users
+  /posts/{postId}:
+    summary: individual blog post operations
+    description: update, delete, read a single post
+    parameters:
+      - $ref: '#/components/parameters/PostId'
+    get:
+      summary: fetch a post
+      description: Get a post by Id
+      operationId: getPost
+      responses:
+        default:
+          description: Default error sample response
+  /users/{userId}:
+    summary: actions for a user
+    description: delete, update and get a user
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    delete:
+      summary: delete a user
+      description: Deletes a user from the server
+      operationId: deleteUser
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Users
+    patch:
+      summary: updates a user
+      description: update a user on the server
+      operationId: updateUser
+      requestBody:
+        $ref: '#/components/requestBodies/UserPostBody'
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Users
+components:
+  parameters:
+    UserId:
+      in: path
+      required: true
+      name: userId
+      schema:
+        type: string
+        minimum: 0
+        example: abc123
+    PostId:
+      in: path
+      required: true
+      name: postId
+      schema:
+        type: integer
+        minimum: 0
+        example: 5
+  responses:
+    UserArrayRespBody:
+      description: user array response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserArray'
+    UserRespBody:
+      description: user response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FullUser'
+  requestBodies:
+    UserPostBody:
+      description: new user request
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NewUserRequest'
+  schemas:
+    UserArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/FullUser'
+    FullUser:
+      allOf:
+        - $ref: '#/components/schemas/PostNewUser'
+        - type: object
+          properties:
+            id:
+              type: string
+              example: xyz123
+    NewUserRequest:
+      allOf:
+        - $ref: '#/components/schemas/PostNewUser'
+        - required:
+            - username
+    PostNewUser:
+      type: object
+      properties:
+        username:
+          type: string
+          example: bear
+        score:
+          type: integer
+          example: 55
+        active:
+          type: boolean
+          example: true
